@@ -1,7 +1,7 @@
 #logo {
-    width: 50px; /* Ajusta o tamanho da logo */
-    height: auto; /* Mantém a proporção */
-    display: block; /* Centraliza a logo */
+    width: 50px; 
+    height: auto; 
+    display: block; 
     margin: 10px auto;
     margin-top: -75px;
     margin-left: 15px;
