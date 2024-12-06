@@ -1,3 +1,11 @@
+#logo {
+    width: 50px; /* Ajusta o tamanho da logo */
+    height: auto; /* Mantém a proporção */
+    display: block; /* Centraliza a logo */
+    margin: 10px auto;
+    margin-top: -75px;
+    margin-left: 15px;
+}
 body {
     font-family: Arial, sans-serif;
     background-color: #000000;
@@ -9,7 +17,8 @@ body {
     text-align: left;
     color: white;
     margin-left: 80px;
-    margin-top: 25px;
+    margin-top: 15px;
+    padding: 10px;
 }
 
 .year-label {
@@ -20,11 +29,12 @@ body {
 
 .dropdown-container {
     position: absolute;
-    top: 30px;
-    right: 10px;
+    top: 28px;
+    right: 12px;
     display: flex;
     align-items: center;
 }
+
 
 .dropdown {
     width: 160px;
@@ -32,7 +42,8 @@ body {
     z-index: 10;
 }
 
-.Select__control {
+
+.dropdown .Select__control {
     background-color: #333;
     border: 1px solid #444;
     color: white;
@@ -40,22 +51,29 @@ body {
     padding: 5px;
 }
 
-.Select__control:hover {
+
+.dropdown .Select__control:hover {
     border-color: #666;
 }
 
-.Select__menu {
+
+.dropdown .Select__menu {
     background-color: #333;
     color: white;
 }
 
-.Select__option {
+.dropdown .Select__option {
     background-color: #333;
     color: white;
 }
 
-.Select__option:hover {
+
+.dropdown .Select__option:hover {
     background-color: #555;
+}
+
+.dropdown .Select__single-value {
+    color: white;
 }
 
 .map-container {
@@ -72,12 +90,12 @@ body {
     color: rgb(48, 48, 48);
     font-size: 18px;
     width: 350px;
-    max-height: 300px;
+    max-height: 285px;
     overflow-y: auto;
     position: absolute;
-    top: 55px;
+    top: 54px;
     right: 10px;
-    margin-top: 30px;
+    margin-top: 24px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
 
@@ -85,19 +103,23 @@ body {
     font-size: 20px;
     font-weight: bold;
     color: rgb(255, 255, 255);
+    margin-bottom: 10px;
+    line-height: 2.5;
 }
 
 #terremotos {
-    font-size: 50px;
+    font-size: 70px;
     font-weight: bold;
-    color: rgb(0, 255, 200);
+    color: #00ffc8;
     padding: 0px;
+    margin: 0px 0;
 }
 
-.donut-box {
-    margin-top: 500px; /* Move o gráfico para cima */
-    margin-left: -100px; /* Move o gráfico para a esquerda */
+.donut-container {
+    margin-top: -245px;
+    margin-left: 924px;
     width: 350px;
+    height: 285px;
     padding: 10px;
     border: 2px solid rgb(48, 48, 48);
     background-color: rgba(0, 0, 0, 0);
