@@ -1,7 +1,7 @@
 #logo {
-    width: 50px; /* Ajusta o tamanho da logo */
-    height: auto; /* Mantém a proporção */
-    display: block; /* Centraliza a logo */
+    width: 50px;
+    height: auto;
+    display: block;
     margin: 10px auto;
     margin-top: -75px;
     margin-left: 15px;
@@ -94,7 +94,7 @@ body {
     overflow-y: auto;
     position: absolute;
     top: 54px;
-    right: 4px;
+    right: 11px;
     margin-top: 24px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
@@ -164,7 +164,7 @@ body {
 
 .bar-container {
     margin-top: 57px;
-    margin-left: 863px;
+    margin-left: 862px;
     width: 430px;
     height: 370px;
     border: 2px solid rgb(48, 48, 48);
