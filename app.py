@@ -1,6 +1,7 @@
 import pandas as pd
 import plotly.express as px
 from dash import Dash, dcc, html, Input, Output
+import numpy as np
 
 #------------------------------------------------------------------------------
 # Inicializando app
@@ -59,8 +60,13 @@ app.layout = html.Div([
     ),
 
     html.Div(
-        dcc.Graph(id='frequencia-mes',figure={}),
-        className="frequencia-container"
+        dcc.Graph(id='box-graph',figure={}),
+        className="box-container"
+    ),
+
+    html.Div(
+        dcc.Graph(id='profundidade-mes',figure={}),
+        className="profundidade-container"
     ),
 
     html.Div(
@@ -70,22 +76,36 @@ app.layout = html.Div([
             html.P(id="text_info", className="text-info"),
             html.P(id="terremotos", className="terremotos"),
             html.P(id="text_info2", className="text-info"),
-        ])
+        ]),
+        
+    html.Div(
+        html.Img(src="assets/box.png", id="box"),
+    ), 
+
+    html.Div(
+        dcc.Graph(id='bar-graph',figure={}),
+        className="bar-container"
+    ),
+
+
 ])
 
 # Callback
-#------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
 @app.callback(
     [Output('mapa', 'figure'),
      Output('text_info', 'children'),
      Output('terremotos', 'children'),
      Output('text_info2', 'children'),
      Output('donut-graph', 'figure'),
-     Output('frequencia-mes', 'figure')],
+     Output('box-graph', 'figure'),
+     Output('profundidade-mes', 'figure'),
+     Output('bar-graph', 'figure')],
     [Input('slct_year', 'value')]
 )
+
 # Filtra o DataFrame pelo ano selecionado
-#------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
 def update_graph(option_slctd):
     dff = df[df["Year"] == option_slctd]
 #-----------------------------------------------------------------------------
@@ -171,62 +191,149 @@ def update_graph(option_slctd):
         )
     )
 #-----------------------------------------------------------------------------
-# Gráfico de donut
-    df_ano_grouped = dff.groupby('Month').size().reset_index(name='Frequência')
-
-    media_frequencia = df_ano_grouped['Frequência'].mean()
-
-    fig_frequencia = px.line(
-        df_ano_grouped,
-        x='Month',
-        y='Frequência',
-        labels={"Month": "Mês", "Frequência": "Frequência"},
-        title=f'Frequência de Terremotos por Mês em {option_slctd}',
-        color_discrete_sequence=["#00ffc8"],
-        width=1300,
-        height=500
+#caixa   
+    fig_box = px.box(
+        dff,
+        x="Month",
+        y="Magnitude",
+        labels={"Month": "Mês", "Magnitude": "Magnitude"},
+        title=f"Distribuição de Magnitudes por Mês em {dff['Year'].iloc[0]}",
+        color_discrete_sequence=["#00ffc8"],  
+        width=915,
+        height=450
     )
 
-    fig_frequencia.add_hline(
-        y=media_frequencia,
-        line=dict(color="white", dash="dash", width=2.5),
-        annotation_text=f"Média: {media_frequencia:.2f}",
-        annotation_position="top right",
-        annotation=dict(
-            font_size=16, 
-            font_color="white", 
-        ),
-    )
-
-    fig_frequencia.update_layout(
+    fig_box.update_layout(
+        plot_bgcolor="#0a0a0a",  
+        paper_bgcolor="rgba(0,0,0,0)",  
         xaxis=dict(
             tickmode='array',
-            tickvals=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], 
-            ticktext=["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
-            tickfont=dict(color="white"),
-            gridcolor="#2e2e2e"
+            tickvals=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],  
+            ticktext=["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],  # Rótulos
+            tickfont=dict(color="white"), 
+            gridcolor="#1c1c1c"  
         ),
         yaxis=dict(
-            tickfont=dict(color="white"),
-            gridcolor="#2e2e2e"
+            tickfont=dict(color="white"), 
+            gridcolor="#1c1c1c"  
         ),
-        plot_bgcolor="#191a1a",
-        paper_bgcolor="rgba(0,0,0,0)",
-        xaxis_title_font=dict(color="white"),
-        yaxis_title_font=dict(color="white"),
+        title=dict(
+            text=f"Distribuição de Magnitudes por Mês em {dff['Year'].iloc[0]}",  
+            font=dict(size=22, color="white", family="Arial, sans-serif"),
+            x=0.5,
+            xanchor='center',
+        ),
+        xaxis_title_font=dict(color="white"),  
+        yaxis_title_font=dict(color="white"),  
     )
 
-    fig_frequencia.update_layout(
+#-----------------------------------------------------------------------------
+# Gráfico linha
+
+    df_ano_grouped = (
+        dff.groupby('Month')['Depth']
+        .apply(lambda x: np.exp(np.log(x).mean()))  # Média logarítmica por mês
+        .reset_index(name='Profundidade_Log_Media')
+    )
+
+    # Passo 2: Criar o gráfico usando a média logarítmica
+    fig_profundidade = px.line(
+        df_ano_grouped,
+        x='Month',
+        y='Profundidade_Log_Media',
+        labels={"Month": "Mês", "Profundidade_Log_Media": "Profundidade (km)"},
+        title=f'Profundidade Média Logarítmica dos Terremotos por Mês em {option_slctd}',
+        color_discrete_sequence=["#00ffc8"],
+        width=850,
+        height=350
+    )
+
+    fig_profundidade.update_layout(
+        xaxis=dict(
+            tickmode='array',
+            tickvals=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],  
+            ticktext=["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"], 
+            tickfont=dict(color="white"),  
+            gridcolor="#1c1c1c" 
+        ),
+        yaxis=dict(
+            tickfont=dict(color="white"),  
+            gridcolor="#1c1c1c" 
+        ),
+        plot_bgcolor="#0a0a0a",  
+        paper_bgcolor="rgba(0,0,0,0)", 
+        xaxis_title_font=dict(color="white"), 
+        yaxis_title_font=dict(color="white"),  
+        margin=dict(l=5, r=50, t=50, b=20),
+    )
+
+
+    fig_profundidade.update_layout(
         title=dict(
-            text=f"Frequência de Terremotos por Mês em {option_slctd}",
+            text=f"Profundidade Média dos Terremotos por Mês em {option_slctd}",
             font=dict(size=22, color="white", family="Arial, sans-serif"),
             x=0.5,
             xanchor='center',
         )
     )
+#-----------------------------------------------------------------------------
+# Gráfico barra
+    month_counts = dff['Month'].value_counts().reset_index(name='Count')
+    month_counts.columns = ['Month', 'Count']
+    month_counts = month_counts.sort_values(by='Month')
+
+
+    meses_nomes = ['Jan ', 'Fev ', 'Mar ', 'Abr ', 'Mai ', 'Jun ', 'Jul ', 'Ago ', 'Set ', 'Out ', 'Nov ', 'Dez ']
+    month_counts['Month'] = month_counts['Month'].apply(lambda x: meses_nomes[x - 1])
+
+    fig_bar = px.bar(
+        month_counts,
+        x='Count', 
+        y='Month', 
+        orientation='h',
+        text='Count',
+        labels={"Month": "Mês", "Count": "Casos"},
+        title=f"Número de Terremotos por Mês em {option_slctd}",
+        width=500,
+        height=400,
+    )
+
+    fig_bar.update_layout(
+        xaxis_title="",
+        yaxis_title="Mês",
+        title=dict(
+            text=f"Número de Terremotos por Mês em {option_slctd}",
+            font=dict(size=16, color="white", family="Arial, sans-serif"),
+            x=0.5,
+            xanchor='center',
+        ),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)", 
+        xaxis_title_font=dict(color="white"), 
+        yaxis_title_font=dict(color="white"),
+    )
+
+
+    fig_bar.update_traces(
+        texttemplate='%{text}', 
+        textposition='outside', 
+        marker=dict(color='#00ffc8', line=dict(color='white', width=1)) 
+    )
+
+    fig_bar.update_yaxes(
+        tickfont=dict(color="white", size=14)
+    )
+    fig_bar.update_xaxes(
+        showticklabels=False,
+        showgrid=False
+    )
+
+    fig_bar.update_traces(textfont=dict(color='white'))
 
 #-----------------------------------------------------------------------------
-    return fig, text_info, terremotos_info, text_info2, fig_donut,fig_frequencia
+
+    return fig, text_info, terremotos_info, text_info2, fig_donut,fig_box,fig_profundidade, fig_bar
 
 if __name__ == '__main__':
     app.run_server(debug=True)
+
