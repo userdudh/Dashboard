@@ -236,7 +236,12 @@ def update_graph(option_slctd):
         .reset_index(name='Profundidade_Log_Media')
     )
 
-    # Passo 2: Criar o gráfico usando a média logarítmica
+    df_ano_grouped['Log_Std_Dev'] = (
+        dff.groupby('Month')['Depth']
+        .apply(lambda x: np.exp(np.log(x).std()))  # Desvio padrão logarítmico por mês
+        .reset_index(name='Log_Std_Dev')['Log_Std_Dev']
+    )
+
     fig_profundidade = px.line(
         df_ano_grouped,
         x='Month',
@@ -247,6 +252,18 @@ def update_graph(option_slctd):
         width=850,
         height=350
     )
+
+    fig_profundidade.update_traces(
+        error_y=dict(
+            type='data',
+            array=df_ano_grouped['Log_Std_Dev'], 
+            visible=True,
+            color="white",
+            thickness=1.5,
+            width=4
+        )
+    )
+
 
     fig_profundidade.update_layout(
         xaxis=dict(
