@@ -1,7 +1,7 @@
 #logo {
-    width: 50px; 
-    height: auto; 
-    display: block; 
+    width: 50px; /* Ajusta o tamanho da logo */
+    height: auto; /* Mantém a proporção */
+    display: block; /* Centraliza a logo */
     margin: 10px auto;
     margin-top: -75px;
     margin-left: 15px;
@@ -94,7 +94,7 @@ body {
     overflow-y: auto;
     position: absolute;
     top: 54px;
-    right: 10px;
+    right: 4px;
     margin-top: 24px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
@@ -117,7 +117,7 @@ body {
 
 .donut-container {
     margin-top: -245px;
-    margin-left: 924px;
+    margin-left: 923px;
     width: 350px;
     height: 285px;
     padding: 10px;
@@ -129,4 +129,60 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     overflow: hidden;
     display: flex;
+}
+.box-container {
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 1263px;
+    height: 450px;
+    padding: 10px;
+    border: 2px solid rgb(48, 48, 48);
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    display: flex;
+}
+
+.profundidade-container {
+    margin-top: 10px;
+    margin-left: 10px;
+    width: 820px;
+    height: 350px;
+    padding: 10px;
+    border: 2px solid rgb(48, 48, 48);
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    display: flex;
+}
+
+.bar-container {
+    margin-top: 57px;
+    margin-left: 863px;
+    width: 430px;
+    height: 370px;
+    border: 2px solid rgb(48, 48, 48);
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    display: flex;
+}
+
+#box {
+    width: 300px;
+    height: auto; 
+    display: block;
+    margin: 10px auto;
+    margin-top: -810px;
+    margin-left: 950px;
+    z-index: 10;
 }
